@@ -1,5 +1,6 @@
 export class HashMap {
   hash = null;
+  bucketsLength = 16;
 
   hash(key) {
     let hashCode = 0;
@@ -7,6 +8,10 @@ export class HashMap {
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
       hashCode = Math.floor((primeNumber * hashCode + key.charCodeAt(i)) % 16);
+    }
+
+    if (hashCode < 0 || hashCode >= bucketsLength) {
+      throw new Error('Trying to access index out of bound');
     }
 
     return hashCode;
