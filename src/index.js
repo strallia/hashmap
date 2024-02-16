@@ -1,2 +1,2 @@
 import './styles.css';
-import { HashMap } from './HashMap';
+import './HashMap';

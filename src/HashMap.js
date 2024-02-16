@@ -1,12 +1,30 @@
-export class HashMap {
-  buckets = [];
-  bucketsLength = 16;
+import { LinkedList } from './LinkedList';
 
-  constructor() {
-    for (let i = 0; i < this.bucketsLength; i++) {
-      this.buckets.push(null);
-    }
-  }
+export class HashMap {
+  table = [
+    null,
+    null,
+    null,
+    (() => {
+      const list = new LinkedList();
+      list.append('first key', 'first value');
+      list.append('second key', 'old value');
+      return list;
+    })(),
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+  ];
+  bucketsLength = 16;
 
   hash(key) {
     let hashCode = 0;
@@ -24,15 +42,25 @@ export class HashMap {
   }
 
   set(key, value) {
-    // find hashCode for given key.
-    // if bucket === null (ie contains no nodes), generate head node for starting new linked list
-    // with key and value properties passed and next set to null.
-    // else traverse list while checking if the curNode's key === key. If so,
-    // stop traversing and update the node's value with passed value.
-    // else if no key match was found, traverse to end of list to append
-    // new node
+    let index = this.hash(key);
+
+    let curBucket = this.table[index];
+
+    if (curBucket === null) {
+      this.table[index] = new LinkedList().append(key, value);
+      return this.table;
+    }
+
+    let hasKey = curBucket.contains(key);
+    if (curBucket && hasKey) {
+      const nodeIndex = curBucket.find(key);
+      curBucket.updateValue(nodeIndex, value);
+      return this.table;
+    } else {
+      // TODO: if list does not contain key -> append new node to end of list
+    }
   }
 }
 
 let myHash = new HashMap();
-console.log(myHash.buckets);
+console.log(myHash.set('second key', 'new value'));
