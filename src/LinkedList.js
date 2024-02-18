@@ -81,6 +81,18 @@ export class LinkedList {
     return 'ERROR: Index outside of list range.';
   }
 
+  size() {
+    if (!this.list) return 0;
+
+    let pointer = this.list.head;
+    let counter = 1;
+    while (pointer.next) {
+      counter += 1;
+      pointer = pointer.next;
+    }
+    return counter;
+  }
+
   // prepend(value) {
   //   if (!this.list) {
   //     this.append(value);
@@ -89,18 +101,6 @@ export class LinkedList {
   //     this.list.head = new Node(value, curHead);
   //   }
   //   return this.list;
-  // }
-
-  // size() {
-  //   if (!this.list) return 0;
-
-  //   let pointer = this.list.head;
-  //   let counter = 1;
-  //   while (pointer.next) {
-  //     counter += 1;
-  //     pointer = pointer.next;
-  //   }
-  //   return counter;
   // }
 
   // head() {

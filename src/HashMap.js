@@ -7,7 +7,8 @@ export class HashMap {
     (() => {
       const list = new LinkedList();
       list.append('key1', 'value1');
-      list.append('test', 'test value');
+      list.append('key2', 'value2');
+      list.append('key3', 'value3');
       return list;
     })(),
     null,
@@ -88,7 +89,15 @@ export class HashMap {
       return true;
     }
   }
+
+  length() {
+    let totalNodes = 0;
+    this.table.forEach((bucket) => {
+      if (bucket) totalNodes += bucket.size();
+    });
+    return totalNodes;
+  }
 }
 
 let myHash = new HashMap();
-console.log(myHash.remove('key1'));
+console.log(myHash.length());
