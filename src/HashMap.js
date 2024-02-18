@@ -71,12 +71,24 @@ export class HashMap {
   }
 
   has(key) {
-    console.log(this.table);
     let index = this.hash(key);
     let curBucket = this.table[index];
     return curBucket && curBucket.contains(key) ? true : false;
   }
+
+  remove(key) {
+    let index = this.hash(key);
+    let curBucket = this.table[index];
+    if (!curBucket || !curBucket.contains(key)) {
+      return false;
+    } else if (curBucket.contains(key)) {
+      let nodeIndex = curBucket.find(key);
+      curBucket.removeAt(nodeIndex);
+      console.log(this.table);
+      return true;
+    }
+  }
 }
 
 let myHash = new HashMap();
-console.log(myHash.has('test'));
+console.log(myHash.remove('key1'));
