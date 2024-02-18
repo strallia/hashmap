@@ -61,7 +61,6 @@ export class HashMap {
   }
 
   get(key) {
-    console.log(this.table);
     let index = this.hash(key);
     let curBucket = this.table[index];
 
@@ -70,7 +69,14 @@ export class HashMap {
       return curBucket.at(nodeIndex).value;
     } else return null;
   }
+
+  has(key) {
+    console.log(this.table);
+    let index = this.hash(key);
+    let curBucket = this.table[index];
+    return curBucket && curBucket.contains(key) ? true : false;
+  }
 }
 
 let myHash = new HashMap();
-console.log(myHash.get('test', 'test'));
+console.log(myHash.has('test'));
