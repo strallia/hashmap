@@ -5,15 +5,15 @@ export class HashMap {
     null,
     null,
     null,
+    null,
+    null,
+    null,
     (() => {
       const list = new LinkedList();
-      list.append('first key', 'first value');
-      list.append('second key', 'old value');
+      list.append('key1', 'value1');
+      list.append('key2', 'value2');
       return list;
     })(),
-    null,
-    null,
-    null,
     null,
     null,
     null,
@@ -42,25 +42,24 @@ export class HashMap {
   }
 
   set(key, value) {
+    // TODO: grow table size when load factor taken into account
     let index = this.hash(key);
 
     let curBucket = this.table[index];
-
     if (curBucket === null) {
-      this.table[index] = new LinkedList().append(key, value);
-      return this.table;
-    }
-
-    let hasKey = curBucket.contains(key);
-    if (curBucket && hasKey) {
+      let newList = new LinkedList();
+      newList.append(key, value);
+      this.table[index] = newList;
+    } else if (curBucket && curBucket.contains(key)) {
       const nodeIndex = curBucket.find(key);
       curBucket.updateValue(nodeIndex, value);
-      return this.table;
     } else {
-      // TODO: if list does not contain key -> append new node to end of list
+      curBucket.append(key, value);
     }
+
+    return this.table;
   }
 }
 
 let myHash = new HashMap();
-console.log(myHash.set('second key', 'new value'));
+console.log(myHash.set('third key', 'new value'));
