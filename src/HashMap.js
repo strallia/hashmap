@@ -4,16 +4,16 @@ export class HashMap {
   table = [
     null,
     null,
-    null,
-    null,
-    null,
-    null,
     (() => {
       const list = new LinkedList();
       list.append('key1', 'value1');
-      list.append('key2', 'value2');
+      list.append('test', 'test value');
       return list;
     })(),
+    null,
+    null,
+    null,
+    null,
     null,
     null,
     null,
@@ -59,7 +59,18 @@ export class HashMap {
 
     return this.table;
   }
+
+  get(key) {
+    console.log(this.table);
+    let index = this.hash(key);
+    let curBucket = this.table[index];
+
+    if (curBucket && curBucket.contains(key)) {
+      let nodeIndex = curBucket.find(key);
+      return curBucket.at(nodeIndex).value;
+    } else return null;
+  }
 }
 
 let myHash = new HashMap();
-console.log(myHash.set('third key', 'new value'));
+console.log(myHash.get('test', 'test'));
