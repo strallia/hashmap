@@ -97,7 +97,14 @@ export class HashMap {
     });
     return totalNodes;
   }
+
+  clear() {
+    const clearedTable = this.table.map(() => {
+      return null;
+    });
+    return (this.table = clearedTable);
+  }
 }
 
 let myHash = new HashMap();
-console.log(myHash.length());
+console.log(myHash.clear());
