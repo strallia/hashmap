@@ -23,7 +23,13 @@ export class HashMap {
     null,
     null,
     null,
-    null,
+    (() => {
+      const list = new LinkedList();
+      list.append('KEY1', 'value1');
+      list.append('KEY2', 'value2');
+      list.append('KEY3', 'value3');
+      return list;
+    })(),
   ];
   bucketsLength = 16;
 
@@ -104,7 +110,23 @@ export class HashMap {
     });
     return (this.table = clearedTable);
   }
+
+  keys() {
+    let filledBuckets = this.table.filter((bucket) => {
+      return bucket !== null;
+    });
+    let keysArr = [];
+    filledBuckets.forEach((list) => {
+      let totalNodes = list.size();
+      let curNodeIndex = 1;
+      while (curNodeIndex <= totalNodes) {
+        keysArr.push(list.at(curNodeIndex).key);
+        curNodeIndex++;
+      }
+    });
+    return keysArr;
+  }
 }
 
 let myHash = new HashMap();
-console.log(myHash.clear());
+console.log(myHash.keys());
