@@ -126,7 +126,23 @@ export class HashMap {
     });
     return keysArr;
   }
+
+  values() {
+    let filledBuckets = this.table.filter((bucket) => {
+      return bucket !== null;
+    });
+    let valuesArr = [];
+    filledBuckets.forEach((list) => {
+      let totalNodes = list.size();
+      let curNodeIndex = 1;
+      while (curNodeIndex <= totalNodes) {
+        valuesArr.push(list.at(curNodeIndex).value);
+        curNodeIndex++;
+      }
+    });
+    return valuesArr;
+  }
 }
 
 let myHash = new HashMap();
-console.log(myHash.keys());
+console.log(myHash.values());
