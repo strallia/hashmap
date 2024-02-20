@@ -3,15 +3,15 @@ import { Node } from './Node';
 export class LinkedList {
   list = null;
 
-  append(key, value) {
+  append(hash, key, value) {
     if (!this.list) {
-      this.list = { head: new Node(key, value) };
+      this.list = { head: new Node(hash, key, value) };
     } else {
       let tmp = this.list.head;
       while (tmp.next) {
         tmp = tmp.next;
       }
-      tmp.next = new Node(key, value);
+      tmp.next = new Node(hash, key, value);
     }
     return this.list;
   }

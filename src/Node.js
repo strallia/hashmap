@@ -1,5 +1,6 @@
 export class Node {
-  constructor(key = null, value = null, nextNode = null) {
+  constructor(hash, key = null, value = null, nextNode = null) {
+    this.hash = hash.toString();
     this.key = key;
     this.value = value;
     this.next = nextNode;
