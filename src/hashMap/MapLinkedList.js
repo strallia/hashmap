@@ -1,17 +1,17 @@
-import { Node } from './Node';
+import { MapNode } from './MapNode';
 
-export class LinkedList {
+export class MapLinkedList {
   list = null;
 
   append(key, value) {
     if (!this.list) {
-      this.list = { head: new Node(key, value) };
+      this.list = { head: new MapNode(key, value) };
     } else {
       let tmp = this.list.head;
       while (tmp.next) {
         tmp = tmp.next;
       }
-      tmp.next = new Node(key, value);
+      tmp.next = new MapNode(key, value);
     }
     return this.list;
   }

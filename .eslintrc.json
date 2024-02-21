@@ -12,6 +12,11 @@
     "sourceType": "module"
   },
   "rules": {
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-plusplus": "off",
+    "consistent-return": "off",
+    "no-return-assign": "off",
+    "func-names": "off",
+    "no-console": "off"
   }
 }
