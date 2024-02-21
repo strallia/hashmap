@@ -59,7 +59,7 @@ export class HashMap {
         } else return total;
       }, 0);
 
-      // collision so increase hash table capacity if reach load factor
+      // collision so increase hash table capacity if reached load factor
       if (totalFilledBuckets / this.capacity >= this.loadFactor) {
         this.increaseCapacity();
         this.set(key, value);
