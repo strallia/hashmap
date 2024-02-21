@@ -1,50 +1,27 @@
 import { LinkedList } from './LinkedList';
 
 export class HashMap {
-  // example hash table
-  table = [
-    null,
-    null,
-    // example linked list with 3 nodes. Each node contains a hashCode, key,
-    // value, and reference to next node.
-    (() => {
-      const list = new LinkedList();
-      list.append(2, 'key1', 'value1');
-      list.append(2, 'key2', 'value2');
-      list.append(2, 'key3', 'value3');
-      return list;
-    })(),
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    (() => {
-      const list = new LinkedList();
-      list.append(16, 'KEY1', 'value1');
-      list.append(16, 'KEY2', 'value2');
-      list.append(16, 'KEY3', 'value3');
-      return list;
-    })(),
-  ];
+  // initialize 16-bucket long hash table by default
+  table = (function () {
+    let table = [];
+    for (let i = 0; i < 16; i++) {
+      table.push(null);
+    }
+    return table;
+  })();
   capacity = 16;
   loadFactor = 0.75;
 
   increaseCapacity() {
-    /*
-     * call this function when a collision occurs (ie when
-     * adding node to filled bucket && you're not updating a key
-     * thats already there).
-     * if the number of filled buckets/capacity = loadFactor,
-     * add a null bucket to table and update capacity size.
-     */
+    this.table.push(null);
+    this.capacity++;
+
+    let entries = this.entries();
+    this.clear();
+    entries.forEach((entry) => {
+      const [key, value] = entry;
+      this.set(key, value);
+    });
   }
 
   hash(key) {
@@ -53,14 +30,14 @@ export class HashMap {
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
       hashCode = Math.floor(
-        (primeNumber * hashCode + key.charCodeAt(i)) % this.table.length,
+        (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity,
       );
     }
 
     if (hashCode < 0 || hashCode >= this.capacity) {
       throw new Error('Trying to access index out of bound');
     }
-    console.log(this.table.length);
+
     return hashCode;
   }
 
@@ -70,15 +47,25 @@ export class HashMap {
     let curBucket = this.table[hash];
     if (curBucket === null) {
       let newList = new LinkedList();
-      newList.append(hash, key, value);
+      newList.append(key, value);
       this.table[hash] = newList;
     } else if (curBucket && curBucket.contains(key)) {
-      const nodeHash = curBucket.find(key);
-      curBucket.updateValue(nodeHash, value);
+      const nodeIndex = curBucket.find(key);
+      curBucket.updateValue(nodeIndex, value);
     } else if (curBucket && !curBucket.contains(key)) {
-      curBucket.append(hash, key, value);
-      // increase hashmap capacity during collisions
-      this.increaseCapacity();
+      const totalFilledBuckets = this.table.reduce((total, value) => {
+        if (value) {
+          return total + 1;
+        } else return total;
+      }, 0);
+
+      // collision so increase hash table capacity if reach load factor
+      if (totalFilledBuckets / this.capacity >= this.loadFactor) {
+        this.increaseCapacity();
+        this.set(key, value);
+      } else {
+        curBucket.append(key, value);
+      }
     }
 
     return this.table;
@@ -108,7 +95,6 @@ export class HashMap {
     } else if (curBucket.contains(key)) {
       let nodeIndex = curBucket.find(key);
       curBucket.removeAt(nodeIndex);
-      console.log(this.table);
       return true;
     }
   }
@@ -181,4 +167,18 @@ export class HashMap {
 }
 
 let myHash = new HashMap();
+
+myHash.set('0', 'val');
+myHash.set('1', 'val');
+myHash.set('2', 'val');
+myHash.set('3', 'val');
+myHash.set('4', 'val');
+myHash.set('5', 'val');
+myHash.set('6', 'val');
+myHash.set('7', 'val');
+myHash.set('8', 'val');
+myHash.set('9', 'val');
+myHash.set('10', 'val');
+myHash.set('20', 'val');
+myHash.set('test', 'val');
 console.log(myHash.table);
