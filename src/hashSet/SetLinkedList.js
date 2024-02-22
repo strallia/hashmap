@@ -1,17 +1,17 @@
-import { SetNode } from './SetNode';
+import { Node } from './SetNode';
 
-export class SetLinkedList {
+export class LinkedList {
   list = null;
 
-  append(key, value) {
+  append(key) {
     if (!this.list) {
-      this.list = { head: new SetNode(key, value) };
+      this.list = { head: new Node(key) };
     } else {
       let tmp = this.list.head;
       while (tmp.next) {
         tmp = tmp.next;
       }
-      tmp.next = new SetNode(key, value);
+      tmp.next = new Node(key);
     }
     return this.list;
   }
@@ -36,17 +36,6 @@ export class SetLinkedList {
       counter += 1;
     }
     return null;
-  }
-
-  updateValue(nodeIndex, value) {
-    let pointer = this.list.head;
-    let curNodeIndex = 1;
-    while (curNodeIndex < nodeIndex) {
-      pointer = pointer.next;
-      curNodeIndex += 1;
-    }
-    pointer.value = value;
-    return pointer;
   }
 
   at(index) {

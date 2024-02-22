@@ -1,7 +1,6 @@
-export class SetNode {
-  constructor(key = null, value = null, nextNode = null) {
+export class Node {
+  constructor(key = null, nextNode = null) {
     this.key = key;
-    this.value = value;
     this.next = nextNode;
   }
 }

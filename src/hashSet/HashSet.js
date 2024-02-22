@@ -1,4 +1,4 @@
-import { SetLinkedList } from './SetLinkedList';
+import { LinkedList } from './SetLinkedList';
 
 export class HashMap {
   // initialize 16-bucket long hash table by default
@@ -18,12 +18,9 @@ export class HashMap {
     this.table.push(null);
     this.capacity++;
 
-    const entries = this.entries();
+    const keys = this.keys();
     this.clear();
-    entries.forEach((entry) => {
-      const [key, value] = entry;
-      this.set(key, value);
-    });
+    keys.forEach((key) => this.set(key));
   }
 
   hash(key) {
@@ -43,20 +40,17 @@ export class HashMap {
     return hashCode;
   }
 
-  set(key, value) {
+  set(key) {
     const hash = this.hash(key);
 
     const curBucket = this.table[hash];
     if (curBucket === null) {
-      const newList = new SetLinkedList();
-      newList.append(key, value);
+      const newList = new LinkedList();
+      newList.append(key);
       this.table[hash] = newList;
-    } else if (curBucket && curBucket.contains(key)) {
-      const nodeIndex = curBucket.find(key);
-      curBucket.updateValue(nodeIndex, value);
     } else if (curBucket && !curBucket.contains(key)) {
-      const totalFilledBuckets = this.table.reduce((total, curValue) => {
-        if (curValue) {
+      const totalFilledBuckets = this.table.reduce((total, filledBucket) => {
+        if (filledBucket) {
           return total + 1;
         }
         return total;
@@ -65,37 +59,32 @@ export class HashMap {
       // collision so increase hash table capacity if reached load factor
       if (totalFilledBuckets / this.capacity >= this.loadFactor) {
         this.increaseCapacity();
-        this.set(key, value);
+        this.set(key);
       } else {
-        curBucket.append(key, value);
+        curBucket.append(key);
       }
     }
 
     return this.table;
   }
 
-  get(key) {
-    const index = this.hash(key);
-    const curBucket = this.table[index];
-
-    if (curBucket && curBucket.contains(key)) {
-      const nodeIndex = curBucket.find(key);
-      return curBucket.at(nodeIndex).value;
-    }
-    return null;
-  }
-
   has(key) {
+    // returns boolean based on whether or not given key is in hash set.
     const index = this.hash(key);
     const curBucket = this.table[index];
     return !!(curBucket && curBucket.contains(key));
   }
 
   remove(key) {
+    // removes given key in hash set if present.
     const index = this.hash(key);
     const curBucket = this.table[index];
     if (!curBucket || !curBucket.contains(key)) {
       return false;
+    }
+    if (curBucket.contains(key) && curBucket.size() === 1) {
+      this.table[index] = null;
+      return true;
     }
     if (curBucket.contains(key)) {
       const nodeIndex = curBucket.find(key);
@@ -105,6 +94,7 @@ export class HashMap {
   }
 
   length() {
+    // returns the number of stored keys in the hash set.
     let totalNodes = 0;
     this.table.forEach((bucket) => {
       if (bucket) totalNodes += bucket.size();
@@ -113,11 +103,13 @@ export class HashMap {
   }
 
   clear() {
+    // removes all entries in the hash set.
     const clearedTable = this.table.map(() => null);
     return (this.table = clearedTable);
   }
 
   keys() {
+    // returns an array containing all the keys inside the hash set.
     const filledBuckets = this.table.filter((bucket) => bucket !== null);
     const keysArr = [];
     filledBuckets.forEach((list) => {
@@ -130,51 +122,20 @@ export class HashMap {
     });
     return keysArr;
   }
-
-  values() {
-    const filledBuckets = this.table.filter((bucket) => bucket !== null);
-    const valuesArr = [];
-    filledBuckets.forEach((list) => {
-      const totalNodes = list.size();
-      let curNodeIndex = 1;
-      while (curNodeIndex <= totalNodes) {
-        valuesArr.push(list.at(curNodeIndex).value);
-        curNodeIndex++;
-      }
-    });
-    return valuesArr;
-  }
-
-  entries() {
-    const filledBuckets = this.table.filter((bucket) => bucket !== null);
-    const keyValuesArr = [];
-    filledBuckets.forEach((list) => {
-      const totalNodes = list.size();
-      let curNodeIndex = 1;
-      while (curNodeIndex <= totalNodes) {
-        keyValuesArr.push([
-          list.at(curNodeIndex).key,
-          list.at(curNodeIndex).value,
-        ]);
-        curNodeIndex++;
-      }
-    });
-    return keyValuesArr;
-  }
 }
 
 const myHash = new HashMap();
-myHash.set('0', 'val');
-myHash.set('1', 'val');
-myHash.set('2', 'val');
-myHash.set('3', 'val');
-myHash.set('4', 'val');
-myHash.set('5', 'val');
-myHash.set('6', 'val');
-myHash.set('7', 'val');
-myHash.set('8', 'val');
-myHash.set('9', 'val');
-myHash.set('10', 'val');
-myHash.set('20', 'val');
-myHash.set('test', 'val');
+myHash.set('0');
+myHash.set('1');
+myHash.set('2');
+myHash.set('3');
+myHash.set('4');
+myHash.set('5');
+myHash.set('6');
+myHash.set('7');
+myHash.set('8');
+myHash.set('9');
+myHash.set('10');
+myHash.set('20');
+myHash.set('test');
 console.log(myHash.table);
