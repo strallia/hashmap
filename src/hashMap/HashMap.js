@@ -1,4 +1,4 @@
-import { MapLinkedList } from './MapLinkedList';
+import { LinkedList } from './MapLinkedList';
 
 export class HashMap {
   // initialize 16-bucket long hash table by default
@@ -48,7 +48,7 @@ export class HashMap {
 
     const curBucket = this.table[hash];
     if (curBucket === null) {
-      const newList = new MapLinkedList();
+      const newList = new LinkedList();
       newList.append(key, value);
       this.table[hash] = newList;
     } else if (curBucket && curBucket.contains(key)) {
@@ -92,10 +92,15 @@ export class HashMap {
   }
 
   remove(key) {
+    // removes given key in hash map if present.
     const index = this.hash(key);
     const curBucket = this.table[index];
     if (!curBucket || !curBucket.contains(key)) {
       return false;
+    }
+    if (curBucket.contains(key) && curBucket.size() === 1) {
+      this.table[index] = null;
+      return true;
     }
     if (curBucket.contains(key)) {
       const nodeIndex = curBucket.find(key);
@@ -167,14 +172,5 @@ const myHash = new HashMap();
 myHash.set('0', 'val');
 myHash.set('1', 'val');
 myHash.set('2', 'val');
-myHash.set('3', 'val');
-myHash.set('4', 'val');
-myHash.set('5', 'val');
-myHash.set('6', 'val');
-myHash.set('7', 'val');
-myHash.set('8', 'val');
-myHash.set('9', 'val');
-myHash.set('10', 'val');
-myHash.set('20', 'val');
 myHash.set('test', 'val');
-console.log(myHash.table);
+console.log(myHash.remove('0'), myHash.table);
