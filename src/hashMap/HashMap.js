@@ -75,6 +75,7 @@ export class HashMap {
   }
 
   get(key) {
+    // returns the value assigned to a given key.
     const index = this.hash(key);
     const curBucket = this.table[index];
 
@@ -86,6 +87,7 @@ export class HashMap {
   }
 
   has(key) {
+    // returns boolean based on whether or not given key is in hash map.
     const index = this.hash(key);
     const curBucket = this.table[index];
     return !!(curBucket && curBucket.contains(key));
@@ -110,6 +112,7 @@ export class HashMap {
   }
 
   length() {
+    // returns the number of stored keys in the hash map.
     let totalNodes = 0;
     this.table.forEach((bucket) => {
       if (bucket) totalNodes += bucket.size();
@@ -118,11 +121,13 @@ export class HashMap {
   }
 
   clear() {
+    // removes all entries in the hash map.
     const clearedTable = this.table.map(() => null);
     return (this.table = clearedTable);
   }
 
   keys() {
+    // returns an array containing all the keys.
     const filledBuckets = this.table.filter((bucket) => bucket !== null);
     const keysArr = [];
     filledBuckets.forEach((list) => {
@@ -137,6 +142,7 @@ export class HashMap {
   }
 
   values() {
+    // returns an array containing all the values.
     const filledBuckets = this.table.filter((bucket) => bucket !== null);
     const valuesArr = [];
     filledBuckets.forEach((list) => {
@@ -151,6 +157,7 @@ export class HashMap {
   }
 
   entries() {
+    // returns an array that contains each key-value pair.
     const filledBuckets = this.table.filter((bucket) => bucket !== null);
     const keyValuesArr = [];
     filledBuckets.forEach((list) => {
