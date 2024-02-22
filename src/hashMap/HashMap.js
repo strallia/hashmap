@@ -180,4 +180,4 @@ myHash.set('0', 'val');
 myHash.set('1', 'val');
 myHash.set('2', 'val');
 myHash.set('test', 'val');
-console.log(myHash.remove('0'), myHash.table);
+console.log(myHash.table);

@@ -4,3 +4,4 @@
 
 # Purpose
 
+Practice creating hash map and hash set data structures.
